@@ -1,1 +1,115 @@
-Open Redirect Tools
+<h1 align="center">
+  <br>
+  <a href="https://github.com/ihsanlearn/redirx"><img src="https://img.shields.io/badge/RedirX-Open%20Redirect%20Scanner-blue?style=for-the-badge&logo=go" alt="RedirX"></a>
+  <br>
+</h1>
+
+<h4 align="center">A high-performance Open Redirect scanner written in Go.</h4>
+
+<p align="center">
+  <a href="#features">Features</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#usage">Usage</a> •
+  <a href="#examples">Examples</a> •
+  <a href="#license">License</a>
+</p>
+
+<p align="center">
+  <a href="https://golang.org"><img src="https://img.shields.io/badge/made%20with-Go-1f425f.svg"></a>
+  <a href="https://github.com/ihsanlearn/redirx/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
+  <a href="https://github.com/ihsanlearn/redirx/issues"><img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat"></a>
+</p>
+
+---
+
+**RedirX** is a fast and concurrent tool designed to detect Open Redirect vulnerabilities. It supports single URL scanning, list scanning, and pipelining from other tools. With customizable payloads and multi-threading support, it is an essential tool for bug bounty hunters and penetration testers.
+
+## Features
+
+- ⚡ **Fast & Concurrent**: Multi-threaded scanning for high performance.
+- 🎯 **Smart Detection**: Detects open redirects based on location headers.
+- 🔧 **Custom Payloads**: Support for custom payloads and payload lists.
+- 🛡️ **Bypass Techniques**: Includes HTTP Parameter Pollution (HPP) and other bypass methods.
+- 管道 **Pipeline Friendly**: Reads input from `stdin` for easy integration with other tools.
+- 📊 **Flexible Output**: Save results to a file or print to stdout.
+
+## Installation
+
+Ensure you have **Go 1.24+** installed.
+
+```bash
+go install github.com/ihsanlearn/redirx/cmd/redirx@latest
+```
+
+## Usage
+
+```bash
+redirx -h
+```
+
+This will display help for the tool. Here are all the switches it supports.
+
+| Flag                 | Description                                    | Example                  |
+| -------------------- | ---------------------------------------------- | ------------------------ |
+| **Input**            |                                                |                          |
+| `-u, -url`           | Target URL for scanning (comma separated)      | `-u https://example.com` |
+| `-l, -list`          | File containing list of target URLs            | `-l urls.txt`            |
+| **Configuration**    |                                                |                          |
+| `-t, -threads`       | Number of concurrent threads (default 25)      | `-t 50`                  |
+| `-T, -timeout`       | Request timeout in seconds (default 10)        | `-T 5`                   |
+| `-p, -payload`       | Custom payload for scanning                    | `-p https://evil.com`    |
+| `-pl, -payload-list` | File containing list of custom payloads        | `-pl payloads.txt`       |
+| `-H, -hpp`           | Enable HTTP Parameter Pollution                | `-H`                     |
+| `-verify-ssl`        | Enable SSL verification (default false)        | `-verify-ssl`            |
+| `-js-check`          | Enable DOM based scan (Experimental)           | `-js-check`              |
+| `-rl, -rate-limit`   | Maximum requests per second (default 10)       | `-rl 20`                 |
+| `-d, -delay`         | Delay between requests in milliseconds         | `-d 100`                 |
+| `-k, -keep-alive`    | Enable keep-alive connections (default true)   | `-k`                     |
+| **Output**           |                                                |                          |
+| `-o, -output`        | File for saving scan results                   | `-o results.txt`         |
+| **Optimization**     |                                                |                          |
+| `-s, -silent`        | Silent mode (only print found vulnerabilities) | `-s`                     |
+| `-v, -verbose`       | Verbose mode (print error & debug messages)    | `-v`                     |
+| `-V, -version`       | Display application version                    | `-V`                     |
+
+## Examples
+
+**1. Scan a single URL:**
+
+```bash
+redirx -u "https://example.com?redirect=test"
+```
+
+**2. Scan a list of URLs from a file:**
+
+```bash
+redirx -l urls.txt
+```
+
+**3. Use a custom payload:**
+
+```bash
+redirx -u "https://example.com?next=test" -p "https://evil.com"
+```
+
+**4. Pipeline with other tools (e.g., waybackurls):**
+
+```bash
+echo "https://example.com" | waybackurls | redirx
+```
+
+**5. Save results to a file:**
+
+```bash
+redirx -l urls.txt -o vulnerable.txt
+```
+
+## License
+
+RedirX is distributed under the [MIT License](https://github.com/ihsanlearn/redirx/blob/main/LICENSE).
+
+<p align="center">
+  <a href="https://github.com/ihsanlearn/redirx">
+    <img src="https://img.shields.io/badge/Made%20with%20%E2%9D%A4%EF%B8%8F%20by-IhsanLearn-red" alt="Made with Love">
+  </a>
+</p>
