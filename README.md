@@ -107,9 +107,3 @@ redirx -l urls.txt -o vulnerable.txt
 ## License
 
 RedirX is distributed under the [MIT License](https://github.com/ihsanlearn/redirx/blob/main/LICENSE).
-
-<p align="center">
-  <a href="https://github.com/ihsanlearn/redirx">
-    <img src="https://img.shields.io/badge/Made%20with%20%E2%9D%A4%EF%B8%8F%20by-IhsanLearn-red" alt="Made with Love">
-  </a>
-</p>
