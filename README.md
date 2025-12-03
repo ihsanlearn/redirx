@@ -104,6 +104,14 @@ echo "https://example.com" | waybackurls | redirx
 redirx -l urls.txt -o vulnerable.txt
 ```
 
+## TODO
+
+- [ ] output handler
+- [ ] js/dom based open redirect
+- [ ] hpp
+- [ ] payload file handler
+- [ ] verify ssl
+
 ## License
 
 RedirX is distributed under the [MIT License](https://github.com/ihsanlearn/redirx/blob/main/LICENSE).
