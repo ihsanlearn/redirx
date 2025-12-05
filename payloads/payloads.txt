@@ -1,0 +1,11 @@
+http://google.com
+//google.com
+/\google.com
+\/google.com
+https://google.com
+//www.google.com/%2f..
+///google.com
+%2f%2fgoogle.com
+//google%00.com
+http://0177.0.0.1
+http://example.com
