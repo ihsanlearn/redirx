@@ -24,8 +24,6 @@ redirx/
 
 
 TODO :
-- output handler
 - js/dom based open redirect
 - hpp
-- payload file handler
 - verify ssl
