@@ -72,7 +72,6 @@ This will display help for the tool. Here are all the switches it supports.
 | `-pl, -payload-list` | File containing list of custom payloads        | `-pl payloads.txt`       |
 | `-H, -hpp`           | Enable HTTP Parameter Pollution                | `-H`                     |
 | `-verify-ssl`        | Enable SSL verification (default false)        | `-verify-ssl`            |
-| `-js-check`          | Enable DOM based scan (Experimental)           | `-js-check`              |
 | `-rl, -rate-limit`   | Maximum requests per second (default 10)       | `-rl 20`                 |
 | `-d, -delay`         | Delay between requests in milliseconds         | `-d 100`                 |
 | `-k, -keep-alive`    | Enable keep-alive connections (default true)   | `-k`                     |
