@@ -6,18 +6,28 @@ import (
 
 	"github.com/ihsanlearn/redirx/internal/input"
 	"github.com/ihsanlearn/redirx/internal/options"
+	"github.com/ihsanlearn/redirx/internal/output"
+	"github.com/ihsanlearn/redirx/payloads"
 	"github.com/ihsanlearn/redirx/pkg/httputils"
 	"github.com/ihsanlearn/redirx/pkg/logger"
 	"github.com/ihsanlearn/redirx/pkg/scanner"
+	"github.com/ihsanlearn/redirx/pkg/utils"
 )
 
 func Run(opts *options.Options) {
 	if !opts.Silent {
 		logger.PrintBanner()
-		logger.Info("Runner initialized. Ready to hunt bugs!")
 	}
 
 	inputProvider := input.NewInputProvider(opts)
+
+	writer, err := output.NewWriter(opts.Output)
+	if err != nil {
+		logger.Error("%s", err)
+		return
+	}
+	defer writer.Close()
+
 	client := httputils.NewScannerClient(opts)
 	urls := inputProvider.StreamURLs()
 
@@ -33,10 +43,20 @@ func Run(opts *options.Options) {
 		}
 	}
 
-	// can be modified later
-	targetPayload := "https://iihn.fun"
-	if opts.Payload != "" {
-		targetPayload = opts.Payload
+	var targetPayloads []string
+	if opts.PayloadList != "" {
+		logger.Info("Using payload list %s", opts.PayloadList)
+		var err error
+		targetPayloads, err = utils.ReadFileLines(opts.PayloadList)
+		if err != nil {
+			logger.Error("%s", err)
+			return
+		}
+	} else if opts.Payload != "" {
+		targetPayloads = []string{opts.Payload}
+	} else {
+		logger.Info("Using default payloads")
+		targetPayloads = payloads.GetDefaultPayloads()
 	}
 
 	for i := 0; i < opts.Threads; i++ {
@@ -52,17 +72,21 @@ func Run(opts *options.Options) {
 						time.Sleep(time.Duration(opts.Delay) * time.Millisecond)
 					}
 
-					result := scanner.ScanUrl(client, url, targetPayload)
+					results := scanner.ScanUrl(client, url, targetPayloads)
 					
-					if result != nil {
-						if opts.Silent {
-							logger.Green(result.VulnerableUrl)
+					for _, result := range results {
+						if result != nil {
+							if opts.Silent {
+								logger.Green(result.VulnerableUrl)
+							} else {
+								logger.Vulnerable("%s", result.VulnerableUrl)
+							}
+							
+							writer.Write(result.VulnerableUrl)
 						} else {
-							logger.Vulnerable("%s", result.VulnerableUrl)
-						}
-					} else {
-						if opts.Verbose {
-							logger.NotVulnerable("%s", url)
+							if opts.Verbose {
+								logger.NotVulnerable("%s", url)
+							}
 						}
 					}
 				}

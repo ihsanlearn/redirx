@@ -13,7 +13,7 @@ type Result struct {
 	Param         string
 }
 
-func ScanUrl(client *http.Client, targetURL string, payload string) *Result {
+func ScanUrl(client *http.Client, targetURL string, payloads []string) []*Result {
 	u, err := url.Parse(targetURL)
 	if err != nil {
 		return nil
@@ -24,47 +24,52 @@ func ScanUrl(client *http.Client, targetURL string, payload string) *Result {
 		return nil
 	}
 
-	for param, _ := range queryParams {
+	var findings []*Result
+
+	for param := range queryParams {
 		fuzzedParams := make(url.Values)
 		for k, v := range queryParams {
 			fuzzedParams[k] = v
 		}
 
-		fuzzedParams.Set(param, payload)
+		for _, payload := range payloads {
+			fuzzedParams.Set(param, payload)
 
-		u.RawQuery = fuzzedParams.Encode()
-		finalURL := u.String()
+			u.RawQuery = fuzzedParams.Encode()
+			finalURL := u.String()
 
-		req, err := http.NewRequest("GET", finalURL, nil)
-		if err != nil {
-			continue
-		}
-
-		req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36")
-
-		resp, err := client.Do(req)
-		if err != nil {
-			continue
-		}
-		defer resp.Body.Close()
-
-		if resp.StatusCode >= 300 && resp.StatusCode <= 399 {
-			location, err := resp.Location()
+			req, err := http.NewRequest("GET", finalURL, nil)
 			if err != nil {
 				continue
 			}
+			req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36")
+		
+			resp, err := client.Do(req)
+			if err != nil {
+				continue
+			}
+			resp.Body.Close()
+		
+			if resp.StatusCode >= 300 && resp.StatusCode <= 399 {
+				location, err := resp.Location()
+				if err != nil {
+					continue
+				}
+	
+				locStr := location.String()
+				if strings.Contains(locStr, payload) {
+					findings = append(findings, &Result{
+						VulnerableUrl: finalURL,
+						Payload:       payload,
+						RedirectTo:    locStr,
+						Param:         param,
+					})
 
-			locStr := location.String()
-			if strings.Contains(locStr, payload) {
-				return &Result{
-					VulnerableUrl: finalURL,
-					Payload:       payload,
-					RedirectTo:    locStr,
-					Param:         param,
+					break
 				}
 			}
 		}
 	}
 
-	return nil
+	return findings
 }
