@@ -16,7 +16,7 @@ type Options struct {
 	Payload     string
 	PayloadList string
 	HPP         bool
-	VerifySSL bool
+	VerifySSL   bool
 	JSCheck     bool
     Version     bool
 	RateLimit   int
@@ -29,12 +29,14 @@ type Options struct {
 	Verbose bool
 }
 
+const Version = "1.1.0"
+
 func ParseOptions() *Options {
 	opts := &Options{}
 
 	flagSet := goflags.NewFlagSet()
 	
-	flagSet.SetDescription("RedirX is a high-performance Open Redirect scanner written in Go.")
+	flagSet.SetDescription("RedirX is a high-performance Open Redirect scanner written in Go")
 
 	flagSet.CreateGroup("input", "Input",
 		flagSet.StringVarP(&opts.URLs, "url", "u", "", "Target URL for scanning (comma separated)"),
@@ -47,8 +49,8 @@ func ParseOptions() *Options {
 		flagSet.StringVarP(&opts.Payload, "payload", "p", "", "Custom payload for scanning"),
 		flagSet.StringVarP(&opts.PayloadList, "payload-list", "pl", "", "File containing list of custom payloads"),
 		flagSet.BoolVarP(&opts.HPP, "hpp", "H", false, "Enable HTTP Parameter Pollution"),
-		flagSet.BoolVarP(&opts.VerifySSL, "verify-ssl", "", false, "Disable SSL verification"),
-		flagSet.BoolVarP(&opts.JSCheck, "js-check", "", false, "Enable DOM based scan (Experimental)"),
+		flagSet.BoolVarP(&opts.VerifySSL, "verify-ssl", "", false, "Enable SSL verification"),
+		// flagSet.BoolVarP(&opts.JSCheck, "js-check", "", false, "Enable DOM based scan (Experimental)"),
 		flagSet.IntVarP(&opts.RateLimit, "rate-limit", "rl", 10, "Maximum requests per second"),
 		flagSet.IntVarP(&opts.Delay, "delay", "d", 0, "Delay between requests (milliseconds)"),
 		flagSet.BoolVarP(&opts.KeepAlive, "keep-alive", "k", true, "Enable keep-alive connections"),
@@ -70,7 +72,7 @@ func ParseOptions() *Options {
 	}
     
     if opts.Version {
-        logger.Info("RedirX Version 1.0.0")
+        logger.Info("RedirX v%s", Version)
         os.Exit(0)
     }
 

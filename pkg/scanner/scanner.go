@@ -13,7 +13,7 @@ type Result struct {
 	Param         string
 }
 
-func ScanUrl(client *http.Client, targetURL string, payloads []string) []*Result {
+func ScanUrl(client *http.Client, targetURL string, payloads []string, useHPP bool) []*Result {
 	u, err := url.Parse(targetURL)
 	if err != nil {
 		return nil
@@ -33,7 +33,11 @@ func ScanUrl(client *http.Client, targetURL string, payloads []string) []*Result
 		}
 
 		for _, payload := range payloads {
-			fuzzedParams.Set(param, payload)
+			if useHPP {
+				fuzzedParams.Add(param, payload)
+			} else {
+				fuzzedParams.Set(param, payload)
+			}
 
 			u.RawQuery = fuzzedParams.Encode()
 			finalURL := u.String()
@@ -56,12 +60,11 @@ func ScanUrl(client *http.Client, targetURL string, payloads []string) []*Result
 					continue
 				}
 	
-				locStr := location.String()
-				if strings.Contains(locStr, payload) {
+				if strings.Contains(location.String(), payload) {
 					findings = append(findings, &Result{
 						VulnerableUrl: finalURL,
 						Payload:       payload,
-						RedirectTo:    locStr,
+						RedirectTo:    location.String(),
 						Param:         param,
 					})
 

@@ -106,11 +106,8 @@ redirx -l urls.txt -o vulnerable.txt
 
 ## TODO
 
-- [ ] output handler
 - [ ] js/dom based open redirect
 - [ ] hpp
-- [ ] payload file handler
-- [ ] verify ssl
 
 ## License
 

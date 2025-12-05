@@ -13,7 +13,7 @@ func NewScannerClient(opts *options.Options) *http.Client {
 	disableKeepAlive := !opts.KeepAlive 
 
 	transport := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: !opts.VerifySSL},
 		
 		DialContext: (&net.Dialer{
 			Timeout:   5 * time.Second,

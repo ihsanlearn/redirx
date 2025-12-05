@@ -62,44 +62,48 @@ func Run(opts *options.Options) {
 	for i := 0; i < opts.Threads; i++ {
 		wg.Add(1)
 		go func() {
-				defer wg.Done()
-				for url := range urls {
-					if ticker != nil {
-						<-ticker.C
-					}
+			defer wg.Done()
+			for url := range urls {
+				if ticker != nil {
+					<-ticker.C
+				}
 
-					if opts.Delay > 0 {
-						time.Sleep(time.Duration(opts.Delay) * time.Millisecond)
-					}
+				if opts.Delay > 0 {
+					time.Sleep(time.Duration(opts.Delay) * time.Millisecond)
+				}
 
-					results := scanner.ScanUrl(client, url, targetPayloads)
-					
-					for _, result := range results {
-						if result != nil {
-							if opts.Silent {
-								logger.Green(result.VulnerableUrl)
-							} else {
-								logger.Vulnerable("%s", result.VulnerableUrl)
-							}
-							
-							writer.Write(result.VulnerableUrl)
-						} else {
-							if opts.Verbose {
-								logger.NotVulnerable("%s", url)
-							}
+				url, notOk := httputils.ProbeURL(url, opts.Timeout)
+				if notOk != "" {
+					if opts.Verbose {
+						logger.Dead("%s", notOk)
+					}
+					continue
+				}
+
+				results := scanner.ScanUrl(client, url, targetPayloads, opts.HPP)
+
+				for _, result := range results {
+					if result != nil {
+						logger.Vulnerable("%s", result.VulnerableUrl)
+
+						writer.Write(result.VulnerableUrl)
+					} else {
+						if opts.Verbose {
+							logger.NotVulnerable("%s", url)
 						}
 					}
 				}
-			}()
-		}
-		
-		wg.Wait()
-		
-		if ticker != nil {
-			ticker.Stop()
-		}
-		
-		if !opts.Silent {
-			logger.Info("Scan completed")
-		}
+			}
+		}()
 	}
+
+	wg.Wait()
+
+	if ticker != nil {
+		ticker.Stop()
+	}
+
+	if !opts.Silent {
+		logger.Info("Scan completed")
+	}
+}

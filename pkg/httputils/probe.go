@@ -7,27 +7,27 @@ import (
 	"time"
 )
 
-func ProbeURL (target string, timeoutSeconds int) string {
+func ProbeURL(target string, timeoutSeconds int) (string, string) {
 	target = strings.TrimSpace(target)
 
 	if strings.HasPrefix(target, "http://") || strings.HasPrefix(target, "https://") {
 		if isReachable(target, timeoutSeconds) {
-			return target
+			return target, ""
 		}
-		return ""
+		return "", target
 	}
 
 	httpsURL := "https://" + target
 	if isReachable(httpsURL, timeoutSeconds) {
-		return httpsURL
+		return httpsURL, ""
 	}
 
 	httpURL := "http://" + target
 	if isReachable(httpURL, timeoutSeconds) {
-		return httpURL
+		return httpURL, ""
 	}
 	
-	return ""
+	return "", target
 }
 
 func isReachable(url string, timeout int) bool {
@@ -50,5 +50,9 @@ func isReachable(url string, timeout int) bool {
 
 	defer resp.Body.Close()
 
-	return resp.StatusCode < 400
+	if resp.StatusCode < 400 {
+		return true
+	}
+	
+	return false
 }

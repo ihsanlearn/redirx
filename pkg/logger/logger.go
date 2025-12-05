@@ -14,6 +14,7 @@ var (
 	Cyan   = color.New(color.FgCyan).SprintFunc()
 	White  = color.New(color.FgWhite).SprintFunc()
 	Black  = color.New(color.FgBlack).SprintFunc()
+	DeadCol   = color.New(color.FgHiBlack).SprintFunc()
 	Bold   = color.New(color.Bold).SprintFunc()
 )
 
@@ -46,6 +47,13 @@ func Debug(format string, args ...interface{}) {
 	msg := fmt.Sprintf(format, args...)
 	fmt.Printf("%s %s\n", prefix, msg)
 }
+
+func Dead(format string, args ...interface{}) {
+	prefix := DeadCol("[DEAD]")
+	msg := fmt.Sprintf(format, args...)
+	fmt.Printf("%s %s\n", prefix, msg)
+}
+
 
 func PrintBanner() {
 	banner := `
