@@ -7,29 +7,13 @@ __________           .___.__      ____  ___
  |____|_  /\___  >____ | |__||__| /___/\  \
         \/     \/     \/                \_/
 </pre>  
+<a href="https://github.com/ihsanlearn/redirx"><img src="https://img.shields.io/badge/RedirX-Open%20Redirect%20Scanner-blue?style=for-the-badge&logo=go" alt="RedirX"></a>
+<div align="center">
+  <img src="https://img.shields.io/badge/Go-1.24%2B-blue?style=for-the-badge&logo=go" alt="Go 1.24+">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT">
+  <img src="https://img.shields.io/badge/Contribution-Welcome-red?style=for-the-badge" alt="Contribution: Welcome">
 </div>
-
-<h1 align="center">
-  <br>
-  <a href="https://github.com/ihsanlearn/redirx"><img src="https://img.shields.io/badge/RedirX-Open%20Redirect%20Scanner-blue?style=for-the-badge&logo=go" alt="RedirX"></a>
-  <br>
-</h1>
-
-<h4 align="center">A high-performance Open Redirect scanner written in Go.</h4>
-
-<p align="center">
-  <a href="#features">Features</a> •
-  <a href="#installation">Installation</a> •
-  <a href="#usage">Usage</a> •
-  <a href="#examples">Examples</a> •
-  <a href="#license">License</a>
-</p>
-
-<p align="center">
-  <a href="https://golang.org"><img src="https://img.shields.io/badge/made%20with-Go-1f425f.svg"></a>
-  <a href="https://github.com/ihsanlearn/redirx/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
-  <a href="https://github.com/ihsanlearn/redirx/issues"><img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat"></a>
-</p>
+</div>
 
 ---
 
