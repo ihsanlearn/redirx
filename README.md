@@ -1,3 +1,14 @@
+<div align="center">
+<pre>
+__________           .___.__      ____  ___
+\______   \ ____   __| _/|__|_____\   \/  /
+ |       _// __ \ / __ | |  \_  __ \     / 
+ |    |   \  ___// /_/ | |  ||  | \/     \ 
+ |____|_  /\___  >____ | |__||__| /___/\  \
+        \/     \/     \/                \_/
+</pre>  
+</div>
+
 <h1 align="center">
   <br>
   <a href="https://github.com/ihsanlearn/redirx"><img src="https://img.shields.io/badge/RedirX-Open%20Redirect%20Scanner-blue?style=for-the-badge&logo=go" alt="RedirX"></a>
@@ -30,7 +41,7 @@
 - 🎯 **Smart Detection**: Detects open redirects based on location headers.
 - 🔧 **Custom Payloads**: Support for custom payloads and payload lists.
 - 🛡️ **Bypass Techniques**: Includes HTTP Parameter Pollution (HPP) and other bypass methods.
-- 管道 **Pipeline Friendly**: Reads input from `stdin` for easy integration with other tools.
+- 🍾 **Pipeline Friendly**: Reads input from `stdin` for easy integration with other tools.
 - 📊 **Flexible Output**: Save results to a file or print to stdout.
 
 ## Installation
@@ -95,7 +106,7 @@ redirx -u "https://example.com?next=test" -p "https://evil.com"
 **4. Pipeline with other tools (e.g., waybackurls):**
 
 ```bash
-echo "https://example.com" | waybackurls | redirx
+echo "https://example.com" | waybackurls | gf redirect | redirx
 ```
 
 **5. Save results to a file:**
@@ -104,11 +115,6 @@ echo "https://example.com" | waybackurls | redirx
 redirx -l urls.txt -o vulnerable.txt
 ```
 
-## TODO
-
-- [ ] js/dom based open redirect
-- [ ] hpp
-
 ## License
 
-RedirX is distributed under the [MIT License](https://github.com/ihsanlearn/redirx/blob/main/LICENSE).
+[MIT License](https://github.com/ihsanlearn/redirx/blob/main/LICENSE)
