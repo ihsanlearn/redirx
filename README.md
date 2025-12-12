@@ -97,7 +97,3 @@ echo "https://example.com" | waybackurls | gf redirect | redirx
 ```bash
 redirx -l urls.txt -o vulnerable.txt
 ```
-
-## License
-
-[MIT License](https://github.com/ihsanlearn/redirx/blob/main/LICENSE)
